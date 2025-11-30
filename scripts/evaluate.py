@@ -1,5 +1,3 @@
-%%writefile
-scripts / evaluate.py
 import os
 import sys
 import random
