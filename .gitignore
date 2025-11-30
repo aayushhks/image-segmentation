@@ -8,5 +8,7 @@
 *.gz
 
 /images/
+/annotations/
 
 *.txt
+
