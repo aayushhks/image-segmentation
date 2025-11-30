@@ -123,17 +123,17 @@ Figure 1.1: Demonstrates the Transformer model's superior ability to delineate f
 
 Figure 2: Robust segmentation of the dog, accurately handling the contrast between the fur and the floor.
 
-Figure 2.1: Highlights the SegFormer's robustness in low-contrast scenarios where the subject's color blends closely with the background.
-
 ![Model Comparison](results/comparison/compare_1.png)
+
+Figure 2.1: Highlights the SegFormer's robustness in low-contrast scenarios where the subject's color blends closely with the background.
 
 ![Sample 2](results/result_2.png)
 
 Figure 3: Handling varied poses. The model correctly identifies the animal's shape even in a non-standard posture.
 
-Figure 3.1: Shows the Transformer's advantage in capturing global context to correctly segment the animal's shape even in complex, non-standard poses.
-
 ![Model Comparison](results/comparison/compare_4.png)
+
+Figure 3.1: Shows the Transformer's advantage in capturing global context to correctly segment the animal's shape even in complex, non-standard poses.
 
 ### 3. Discussion & Findings
 
