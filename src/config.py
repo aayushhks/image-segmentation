@@ -4,10 +4,13 @@ import torch
 
 class Config:
     # Project Settings
-    PROJECT_NAME = "SegFormer_OxfordPets_Study"
+    PROJECT_NAME = "SegFormer_Research_Study"
+
+    # Dataset Settings
+    DATASET = "OxfordPets"  # Options: "OxfordPets", "PascalVOC"
     INPUT_SIZE = 256
 
-    # Mac M4 Pro has plenty of RAM, so we can use a decent batch size
+    # Compute Settings
     BATCH_SIZE = 16
     EPOCHS = 15
     LEARNING_RATE = 1e-4
@@ -15,15 +18,15 @@ class Config:
     NUM_WORKERS = 2
 
     # Model Settings
-    ENCODER = "mit_b0"  # Mix Transformer (SegFormer)
+    ENCODER = "mit_b0"
     ENCODER_WEIGHTS = "imagenet"
     ARCHITECTURE = "MAnet"
 
-    # Compute Settings - Optimized for Mac (MPS)
+    # Hardware Detection
     if torch.cuda.is_available():
         DEVICE = "cuda"
     elif torch.backends.mps.is_available():
-        DEVICE = "mps"  # <--- Metal Performance Shaders (Apple Silicon GPU)
+        DEVICE = "mps"
     else:
         DEVICE = "cpu"
 
@@ -35,7 +38,15 @@ class Config:
     VAL_LIST = "val_list.txt"
     CHECKPOINT_DIR = "checkpoints"
 
-    # Create checkpoint dir if it doesn't exist
+    # Ensure checkpoint directory exists
     os.makedirs(CHECKPOINT_DIR, exist_ok=True)
-
     BEST_MODEL_PATH = os.path.join(CHECKPOINT_DIR, "best_model.pth")
+
+    # Dynamic Properties (Needed for Multi-class expansion later)
+    @property
+    def NUM_CLASSES(self):
+        return 21 if self.DATASET == "PascalVOC" else 1
+
+    @property
+    def ACTIVATION(self):
+        return "softmax2d" if self.DATASET == "PascalVOC" else "sigmoid"

@@ -35,8 +35,15 @@ class OxfordPetDataset(Dataset):
             image = augmented['image']
             mask = augmented['mask']
 
+        # --- FIX START ---
+        # Check if mask is already a tensor (from Albumentations ToTensorV2)
+        if isinstance(mask, np.ndarray):
+            mask = torch.from_numpy(mask)
+
+        # Ensure mask has channel dimension (1, H, W)
         if mask.ndim == 2:
-            mask = torch.from_numpy(mask).unsqueeze(0)
+            mask = mask.unsqueeze(0)
+        # --- FIX END ---
 
         return image, mask.float()
 
@@ -85,7 +92,10 @@ class PascalVOCDataset(Dataset):
 
         # For Multi-class, mask should be LongTensor (H, W) with values 0-N
         # No channel dimension needed for CrossEntropy
-        mask = torch.from_numpy(mask).long()
+        if isinstance(mask, np.ndarray):
+            mask = torch.from_numpy(mask)
+
+        mask = mask.long()
 
         return image, mask
 

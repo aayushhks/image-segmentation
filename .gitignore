@@ -1,6 +1,6 @@
 # Model files
 *.h5
-/.idea/
+/.idea
 
 # macOS system files
 *.DS_Store
