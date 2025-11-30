@@ -1,14 +1,30 @@
-# Model files
-*.h5
-/.idea
+# Python & Environment
+__pycache__/
+*.pyc
+venv/
+.env
 
-# macOS system files
-*.DS_Store
+# Mac OS Garbage
+.DS_Store
 
-# Compressed archives
-*.gz
+# Datasets (Too large for Git)
+images/
+annotations/
+VOCdevkit/
+*.tar.gz
 
-/images/
-/annotations/
+# We ignore these because prepare_data.py generates them fresh
+*_list.txt
 
-*.txt
+# Model Weights (Large Binaries)
+# Git blocks files >100MB. Weights should be generated, not stored.
+checkpoints/
+*.pth
+
+# Experiment Tracking Logs
+wandb/
+
+# IDE & Notebook Metadata
+.ipynb_checkpoints
+.vscode/
+.idea/
