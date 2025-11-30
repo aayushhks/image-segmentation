@@ -6,6 +6,7 @@ from torch.utils.data import Dataset, DataLoader
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
+
 class OxfordPetDataset(Dataset):
     def __init__(self, root_dir, list_file, transform=None):
         self.root_dir = root_dir
@@ -25,7 +26,7 @@ class OxfordPetDataset(Dataset):
         # Load Image (RGB)
         image = cv2.imread(img_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        
+
         # Load Mask (Grayscale)
         mask = cv2.imread(mask_path, 0)
 
@@ -39,11 +40,16 @@ class OxfordPetDataset(Dataset):
             image = augmented['image']
             mask = augmented['mask']
 
+        # Fix: Check if mask is already a tensor (from Albumentations)
+        if isinstance(mask, np.ndarray):
+            mask = torch.from_numpy(mask)
+
         # PyTorch expects channel-first format for masks (1, H, W)
         if mask.ndim == 2:
-            mask = torch.from_numpy(mask).unsqueeze(0)
+            mask = mask.unsqueeze(0)
 
         return image, mask.float()
+
 
 def get_transforms(phase, input_size):
     """Returns Albumentations transform pipeline."""
@@ -67,31 +73,32 @@ def get_transforms(phase, input_size):
             ToTensorV2()
         ])
 
+
 def get_loaders(config):
     train_ds = OxfordPetDataset(
-        config.DATA_DIR, 
-        config.TRAIN_LIST, 
+        config.DATA_DIR,
+        config.TRAIN_LIST,
         transform=get_transforms('train', config.INPUT_SIZE)
     )
-    
+
     val_ds = OxfordPetDataset(
-        config.DATA_DIR, 
-        config.VAL_LIST, 
+        config.DATA_DIR,
+        config.VAL_LIST,
         transform=get_transforms('valid', config.INPUT_SIZE)
     )
 
     train_loader = DataLoader(
-        train_ds, 
-        batch_size=config.BATCH_SIZE, 
-        shuffle=True, 
+        train_ds,
+        batch_size=config.BATCH_SIZE,
+        shuffle=True,
         num_workers=config.NUM_WORKERS
     )
-    
+
     val_loader = DataLoader(
-        val_ds, 
-        batch_size=config.BATCH_SIZE, 
-        shuffle=False, 
+        val_ds,
+        batch_size=config.BATCH_SIZE,
+        shuffle=False,
         num_workers=config.NUM_WORKERS
     )
-    
+
     return train_loader, val_loader
