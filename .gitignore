@@ -1,8 +1,9 @@
 # Model files
 *.h5
+/.idea/
 
 # macOS system files
-.DS_Store
+*.DS_Store
 
 # Compressed archives
 *.gz
@@ -11,4 +12,3 @@
 /annotations/
 
 *.txt
-
