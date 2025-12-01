@@ -87,7 +87,7 @@ python scripts/evaluate.py
 
 ## Experiment Results & Analysis
 
-### 1. Quantitative Performance
+### 1. Ablation Study & Quantitative Performance
 
 We evaluated the Transformer-based SegFormer architecture against a standard CNN baseline. The SegFormer (MA-Net + MiT-B0) demonstrated superior performance, achieving a high Intersection-over-Union (IoU) score on the validation set.
 
@@ -101,6 +101,16 @@ Note: The Transformer model achieved an IoU of 0.8852, indicating excellent over
 * **Performance:** Both models achieved excellent convergence (>88% IoU) quickly due to ImageNet pretraining.
 * **Data Efficiency:** On this smaller dataset (Oxford Pets), the CNN baseline performed marginally better (+0.4%). Transformers typically shine on massive datasets (like ADE20K) where global context is more critical.
 * **Efficiency:** The **MiT-B0 encoder** (Transformer) is significantly lighter, with **3.7M parameters** compared to ResNet34's **21M**, making it a strong candidate for mobile deployment despite the similar accuracy.
+
+To justify our architectural choices, we conducted an ablation study comparing the CNN baseline against the Transformer model at different resolutions.
+
+| Experiment | Encoder | Resolution | Best Val IoU |
+| :--- | :--- | :--- | :--- |
+| Baseline (ResNet34) | resnet34 | 256 | 0.8771 |
+| Transformer (MiT-B0) | mit_b0 | 256 | 0.8705 |
+| **Transformer High-Res** | **mit_b0** | **320** | **0.8783** |
+
+> **Note:** Increasing the resolution to 320x320 improved the Transformer's performance, demonstrating its capacity to leverage finer spatial details compared to the lower-resolution runs.
 
 ### 2. Visual Inference (Qualitative Analysis)
 
